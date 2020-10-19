@@ -1,0 +1,9 @@
+pluginManagement {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin"
+        }
+    }
+}
+rootProject.name = 'sunshine-job'
+include 'job-admin'
+include 'job-client'
