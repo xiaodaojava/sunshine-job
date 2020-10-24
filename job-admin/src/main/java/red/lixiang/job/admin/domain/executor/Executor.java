@@ -8,7 +8,11 @@ import red.lixiang.job.admin.model.dos.JobExec;
  **/
 public interface Executor {
 
-    void exec(JobExec jobExec);
+    /**
+     * 用于提交异步的任务
+     * @param jobExec
+     */
+    String submitAsync(JobExec jobExec);
 
     String submit(JobExec jobExec);
 }

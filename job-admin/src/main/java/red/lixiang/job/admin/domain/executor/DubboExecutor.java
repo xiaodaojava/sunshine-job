@@ -1,6 +1,7 @@
 package red.lixiang.job.admin.domain.executor;
 
 import red.lixiang.job.admin.model.dos.JobExec;
+import red.lixiang.tools.common.dubbo.DubboTools;
 
 /**
  * @author lixiang
@@ -9,12 +10,13 @@ import red.lixiang.job.admin.model.dos.JobExec;
 public class DubboExecutor implements Executor{
 
     @Override
-    public void exec(JobExec jobExec) {
-
+    public String submitAsync(JobExec jobExec) {
+        return null;
     }
 
     @Override
     public String submit(JobExec jobExec) {
+        DubboTools.invokeNoArg(jobExec.getDubboRegistryUrl(),jobExec.getDubboClass(), jobExec.getDubboMethod());
         return null;
     }
 }

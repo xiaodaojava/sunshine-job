@@ -8,12 +8,14 @@ import red.lixiang.job.admin.model.dos.JobExec;
  **/
 public class HttpExecutor implements Executor{
 
-    
+
 
     @Override
-    public void exec(JobExec jobExec) {
-
+    public String submitAsync(JobExec jobExec) {
+        return null;
     }
+
+
 
     @Override
     public String submit(JobExec jobExec) {

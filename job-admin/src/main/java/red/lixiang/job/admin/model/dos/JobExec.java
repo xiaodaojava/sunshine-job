@@ -25,6 +25,10 @@ public class JobExec {
     @SqlField
     private String httpUrl;
 
+    /** dubbo注册地址 */
+    @SqlField
+    private String dubboRegistryUrl;
+
     @SqlField
     private String dubboClass;
 
@@ -36,6 +40,14 @@ public class JobExec {
 
     @SqlField(createTime = true)
     private Date createTime;
+
+    public String getDubboRegistryUrl() {
+        return dubboRegistryUrl;
+    }
+
+    public void setDubboRegistryUrl(String dubboRegistryUrl) {
+        this.dubboRegistryUrl = dubboRegistryUrl;
+    }
 
     public Long getId() {
         return id;
