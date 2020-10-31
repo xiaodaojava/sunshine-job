@@ -17,6 +17,9 @@ public class JobExec {
     private Long jobId;
 
     @SqlField
+    private String jobCode;
+
+    @SqlField
     private String parameter;
 
     @SqlField
@@ -40,6 +43,15 @@ public class JobExec {
 
     @SqlField(createTime = true)
     private Date createTime;
+
+    public String getJobCode() {
+        return jobCode;
+    }
+
+    public JobExec setJobCode(String jobCode) {
+        this.jobCode = jobCode;
+        return this;
+    }
 
     public String getDubboRegistryUrl() {
         return dubboRegistryUrl;

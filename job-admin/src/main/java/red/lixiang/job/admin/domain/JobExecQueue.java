@@ -1,13 +1,15 @@
 package red.lixiang.job.admin.domain;
 
-import red.lixiang.job.admin.model.dos.Job;
+import red.lixiang.job.admin.dao.JobExecMapper;
+import red.lixiang.job.admin.dao.JobLogMapper;
+import red.lixiang.job.admin.domain.executor.Executor;
+import red.lixiang.job.admin.domain.executor.ExecutorFactory;
 import red.lixiang.job.admin.model.dos.JobExec;
+import red.lixiang.job.admin.model.dos.JobLog;
 import red.lixiang.tools.jdk.ListTools;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * 待执行任务列表
@@ -20,16 +22,25 @@ public class JobExecQueue {
 
     private List<JobExec> jobList = new LinkedList<>();
 
+    private JobExecMapper jobExecMapper;
+
+    private JobLogMapper jobLogMapper;
+
     public void run(){
             while (true){
                 while (System.currentTimeMillis() > nextRunTime && ListTools.isNotBlank(jobList) ){
 
                     // 从队列中取出一个任务
                     JobExec job = jobList.remove(0);
-
+                    Executor executor = ExecutorFactory.getExecutor(job.getInvokeType());
+                    String submit = executor.submit(job);
                     // 记录执行情况
-
+                    JobLog log = new JobLog();
+                    log.setJobCode(log.getJobCode());
+                    log.setResult(submit);
+                    jobLogMapper.insert(log);
                     // 从库里删掉这个任务
+                    jobExecMapper.removeById(job.getId());
 
                 }
             }

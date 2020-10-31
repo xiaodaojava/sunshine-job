@@ -16,7 +16,8 @@ public class DubboExecutor implements Executor{
 
     @Override
     public String submit(JobExec jobExec) {
-        DubboTools.invokeNoArg(jobExec.getDubboRegistryUrl(),jobExec.getDubboClass(), jobExec.getDubboMethod());
-        return null;
+        Object result = DubboTools.invokeNoArg(jobExec.getDubboRegistryUrl(), jobExec.getDubboClass(), jobExec.getDubboMethod());
+
+        return result.toString();
     }
 }
