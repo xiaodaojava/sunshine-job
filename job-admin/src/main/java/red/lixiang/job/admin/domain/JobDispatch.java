@@ -1,6 +1,5 @@
 package red.lixiang.job.admin.domain;
 
-import org.springframework.stereotype.Component;
 import red.lixiang.job.admin.dao.JobExecMapper;
 import red.lixiang.job.admin.dao.JobMapper;
 import red.lixiang.job.admin.model.dos.Job;
@@ -51,9 +50,16 @@ public class JobDispatch {
                         continue;
                     }
                     // 替换最近的一个时间
-                    long time = date.getTime();
-                    if(time<nestTime){
-                        nestTime = time;
+                    long nextRunTime = date.getTime();
+                    if(nextRunTime<nestTime){
+                        nestTime = nextRunTime;
+                    }
+                    // 如果记录的next_exec_time和当前的下次执行时间一致
+                    // 就是已经记到调度里面的,就不用再记了
+                    Date nextExecTime = job.getNextExecTime();
+                    long execTime = nextExecTime.getTime();
+                    if(execTime==nextRunTime){
+                        continue;
                     }
                     // 添加到任务执行库里面去
                     JobExec jobExec = JobExec.fromJob(job);

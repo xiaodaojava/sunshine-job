@@ -26,6 +26,9 @@ public class Job {
     private String cron;
 
     @SqlField
+    private Date nextExecTime;
+
+    @SqlField
     private String parameter;
 
     @SqlField
@@ -48,6 +51,15 @@ public class Job {
 
     public Long getId() {
         return id;
+    }
+
+    public Date getNextExecTime() {
+        return nextExecTime;
+    }
+
+    public Job setNextExecTime(Date nextExecTime) {
+        this.nextExecTime = nextExecTime;
+        return this;
     }
 
     public Job setId(Long id) {

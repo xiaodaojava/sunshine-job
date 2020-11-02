@@ -7,4 +7,5 @@ import red.lixiang.tools.common.mybatis.model.BaseQC;
  * @date 2020/10/17
  **/
 public class JobExecQC extends BaseQC {
+
 }
