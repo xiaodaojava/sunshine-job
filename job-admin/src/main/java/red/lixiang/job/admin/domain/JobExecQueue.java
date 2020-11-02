@@ -26,11 +26,9 @@ public class JobExecQueue {
 
     private JobExecMapper jobExecMapper;
 
-    private JobLogMapper jobLogMapper;
 
     public JobExecQueue() {
         this.jobExecMapper = ContextHolder.getBean(JobExecMapper.class).get();
-        this.jobLogMapper = ContextHolder.getBean(JobLogMapper.class).get();
     }
 
     public void run(){
