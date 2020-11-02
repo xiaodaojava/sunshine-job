@@ -148,6 +148,8 @@ public class JobExec {
                 .setParameter(job.getParameter())
                 .setDubboClass(job.getDubboClass())
                 .setDubboMethod(job.getDubboMethod())
+                .setInvokeType(job.getInvokeType())
+                .setExecTime(job.getNextExecTime())
                 .setHttpUrl(job.getHttpUrl());
         return jobExec;
     }

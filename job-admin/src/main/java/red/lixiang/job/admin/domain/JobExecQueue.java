@@ -5,14 +5,11 @@ import red.lixiang.job.admin.dao.JobLogMapper;
 import red.lixiang.job.admin.domain.executor.Executor;
 import red.lixiang.job.admin.domain.executor.ExecutorFactory;
 import red.lixiang.job.admin.model.dos.JobExec;
-import red.lixiang.job.admin.model.dos.JobLog;
 import red.lixiang.job.admin.model.qc.JobExecQC;
 import red.lixiang.tools.common.mybatis.model.Page;
-import red.lixiang.tools.common.mybatis.model.Sort;
 import red.lixiang.tools.jdk.ListTools;
 import red.lixiang.tools.spring.ContextHolder;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,11 +39,14 @@ public class JobExecQueue {
 
                     // 从库里面取出一个任务
                     JobExec job = getOneJobExec();
+                    if(job==null){
+                        nextRunTime = System.currentTimeMillis()+30000;
+                        continue;
+                    }
                     Executor executor = ExecutorFactory.getExecutor(job.getInvokeType());
                     // 先都使用异步去处理
                     String submit = executor.submitAsync(job);
-
-                    // 从库里删掉这个任务
+                    // 提交完就从库里删掉这个任务
                     jobExecMapper.removeById(job.getId());
 
                 }
@@ -54,8 +54,8 @@ public class JobExecQueue {
     }
 
 
-    public JobExec getOneJobExec(){
-        //从库里面按时间取50个任务,放到List中,并进行判重
+    private JobExec getOneJobExec(){
+        //从库里面按时间取1个任务,放到List中,并进行判重
         JobExecQC execQC = new JobExecQC();
         execQC.setPage(Page.getOne());
         execQC.addSort("exec_time");
