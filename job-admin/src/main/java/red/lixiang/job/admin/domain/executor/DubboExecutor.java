@@ -1,6 +1,7 @@
 package red.lixiang.job.admin.domain.executor;
 
-import red.lixiang.job.admin.dao.JobExecMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import red.lixiang.job.admin.dao.JobLogMapper;
 import red.lixiang.job.admin.model.dos.JobExec;
 import red.lixiang.job.admin.model.dos.JobLog;
@@ -17,6 +18,9 @@ import java.util.concurrent.Future;
  **/
 public class DubboExecutor implements Executor{
 
+    Logger logger = LoggerFactory.getLogger(HttpExecutor.class);
+
+
     private JobLogMapper jobLogMapper;
 
     public DubboExecutor() {
@@ -31,6 +35,7 @@ public class DubboExecutor implements Executor{
             JobLog log = new JobLog();
             log.setExecTime(jobExec.getExecTime())
                     .setJobCode(jobExec.getJobCode());
+            logger.error("正在执行dubbo定时任务,url:{}",jobExec.getDubboClass()+"#"+jobExec.getDubboMethod());
             Object result = DubboTools.invokeNoArg(jobExec.getDubboRegistryUrl(), jobExec.getDubboClass(), jobExec.getDubboMethod());
             log.setResult(result.toString());
             jobLogMapper.insert(log);
@@ -38,6 +43,7 @@ public class DubboExecutor implements Executor{
         });
         return null;
     }
+
 
     @Override
     public String submit(JobExec jobExec) {

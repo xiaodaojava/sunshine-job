@@ -74,6 +74,7 @@ public class JobDispatch {
                     JobExec jobExec = JobExec.fromJob(job);
                     jobExecMapper.insert(jobExec);
                 }
+                System.out.println("当前时间是"+System.currentTimeMillis()+"下次执行时间为:"+nestTime);
                 nextCheckTime = nestTime;
             }
         }

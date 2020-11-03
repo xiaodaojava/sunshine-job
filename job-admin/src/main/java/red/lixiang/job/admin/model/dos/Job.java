@@ -40,6 +40,10 @@ public class Job {
     @SqlField
     private String dubboMethod;
 
+    /** dubbo注册地址 */
+    @SqlField
+    private String dubboRegistryUrl;
+
     @SqlField
     private Integer status;
 
@@ -163,6 +167,15 @@ public class Job {
 
     public Job setStatus(Integer status) {
         this.status = status;
+        return this;
+    }
+
+    public String getDubboRegistryUrl() {
+        return dubboRegistryUrl;
+    }
+
+    public Job setDubboRegistryUrl(String dubboRegistryUrl) {
+        this.dubboRegistryUrl = dubboRegistryUrl;
         return this;
     }
 }

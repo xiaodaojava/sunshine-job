@@ -57,8 +57,9 @@ public class JobExec {
         return dubboRegistryUrl;
     }
 
-    public void setDubboRegistryUrl(String dubboRegistryUrl) {
+    public JobExec setDubboRegistryUrl(String dubboRegistryUrl) {
         this.dubboRegistryUrl = dubboRegistryUrl;
+        return this;
     }
 
     public Long getId() {
@@ -148,6 +149,7 @@ public class JobExec {
                 .setParameter(job.getParameter())
                 .setDubboClass(job.getDubboClass())
                 .setDubboMethod(job.getDubboMethod())
+                .setDubboRegistryUrl(job.getDubboRegistryUrl())
                 .setInvokeType(job.getInvokeType())
                 .setExecTime(job.getNextExecTime())
                 .setHttpUrl(job.getHttpUrl());
