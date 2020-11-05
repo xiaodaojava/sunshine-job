@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
  **/
 public class DubboExecutor implements Executor{
 
-    Logger logger = LoggerFactory.getLogger(HttpExecutor.class);
+    Logger logger = LoggerFactory.getLogger(DubboExecutor.class);
 
 
     private JobLogMapper jobLogMapper;
