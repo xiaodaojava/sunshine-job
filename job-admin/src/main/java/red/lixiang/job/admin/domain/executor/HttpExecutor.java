@@ -17,41 +17,21 @@ import java.util.concurrent.Future;
  * @author lixiang
  * @date 2020/10/18
  **/
-public class HttpExecutor implements Executor{
+public class HttpExecutor extends AbstractExecutor{
 
-    Logger logger = LoggerFactory.getLogger(HttpExecutor.class);
-
-    private JobLogMapper jobLogMapper;
-
-    public HttpExecutor() {
-        jobLogMapper = ContextHolder.getBean(JobLogMapper.class).get();
-    }
-
+    /**
+     * 真正执行逻辑的地方,交给子类去实现
+     *
+     * @param jobExec
+     * @return
+     */
     @Override
-    public String submitAsync(JobExec jobExec) {
-        ThreadPoolTools poolTools = ThreadPoolFactory.get();
-        Future<Object> submit = poolTools.submit(() -> {
-            // 现在就先只支持http-get方式
-            // 记日志
-            JobLog log = new JobLog();
-            log.setExecTime(jobExec.getExecTime())
-                    .setJobCode(jobExec.getJobCode());
-            String httpUrl = jobExec.getHttpUrl();
-            logger.error("正在执行http定时任务,url:{}",httpUrl);
-            HttpResponse<String> response = HttpTools.doGet(httpUrl, null, String.class);
-            String body = response.getBody();
-            log.setResult(body);
-            jobLogMapper.insert(log);
-            return body;
-        });
-        return null;
-    }
-
-
-
-    @Override
-    public String submit(JobExec jobExec) {
-        return null;
+    public String doSubmitAsync(JobExec jobExec) {
+        String httpUrl = jobExec.getHttpUrl();
+        logger.error("正在执行http定时任务,url:{}",httpUrl);
+        HttpResponse<String> response = HttpTools.doGet(httpUrl, null, String.class);
+        String body = response.getBody();
+        return body;
     }
 
 }

@@ -16,38 +16,20 @@ import java.util.concurrent.Future;
  * @author lixiang
  * @date 2020/10/18
  **/
-public class DubboExecutor implements Executor{
-
-    Logger logger = LoggerFactory.getLogger(DubboExecutor.class);
+public class DubboExecutor extends AbstractExecutor{
 
 
-    private JobLogMapper jobLogMapper;
-
-    public DubboExecutor() {
-        jobLogMapper = ContextHolder.getBean(JobLogMapper.class).get();
-    }
-
+    /**
+     * 真正执行逻辑的地方,交给子类去实现
+     *
+     * @param jobExec
+     * @return
+     */
     @Override
-    public String submitAsync(JobExec jobExec) {
-        ThreadPoolTools poolTools = ThreadPoolFactory.get();
-        Future<Object> submit = poolTools.submit(() -> {
-            // 记日志
-            JobLog log = new JobLog();
-            log.setExecTime(jobExec.getExecTime())
-                    .setJobCode(jobExec.getJobCode());
-            logger.error("正在执行dubbo定时任务,url:{}",jobExec.getDubboClass()+"#"+jobExec.getDubboMethod());
-            Object result = DubboTools.invokeNoArg(jobExec.getDubboRegistryUrl(), jobExec.getDubboClass(), jobExec.getDubboMethod());
-            log.setResult(result.toString());
-            jobLogMapper.insert(log);
-            return result;
-        });
-        return null;
+    public String doSubmitAsync(JobExec jobExec) {
+        Object result = DubboTools.invokeNoArg(jobExec.getDubboRegistryUrl(), jobExec.getDubboClass(), jobExec.getDubboMethod());
+        return result.toString();
     }
 
 
-    @Override
-    public String submit(JobExec jobExec) {
-
-        return null;
-    }
 }
