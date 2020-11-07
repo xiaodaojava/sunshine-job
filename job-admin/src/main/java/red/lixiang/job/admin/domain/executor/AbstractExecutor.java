@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import red.lixiang.job.admin.dao.JobLogMapper;
 import red.lixiang.job.admin.model.dos.JobExec;
 import red.lixiang.job.admin.model.dos.JobLog;
-import red.lixiang.tools.common.dubbo.DubboTools;
+import red.lixiang.tools.jdk.ExceptionTools;
 import red.lixiang.tools.jdk.thread.ThreadPoolFactory;
 import red.lixiang.tools.jdk.thread.ThreadPoolTools;
 import red.lixiang.tools.spring.ContextHolder;
@@ -41,7 +41,12 @@ public abstract class AbstractExecutor implements Executor{
             JobLog log = new JobLog();
             log.setExecTime(jobExec.getExecTime())
                     .setJobCode(jobExec.getJobCode());
-            String result = doSubmitAsync(jobExec);
+            String result;
+            try{
+                 result = doSubmitAsync(jobExec);
+            }catch (Exception e){
+                 result = ExceptionTools.exceptionMsg(e);
+            }
             log.setResult(result);
             jobLogMapper.insert(log);
             return result;
